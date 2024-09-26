@@ -15,3 +15,6 @@ services:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317:4317"     # OTLP gRPC receiver
+      - "55680:55680"   # OpenTelemetry HTTP receiver
+
+# This service is optional but useful for testing and accessing a trace UI quickly.

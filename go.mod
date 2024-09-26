@@ -1,4 +1,4 @@
-module otel-example
+module otel-starter
 
 go 1.22
 

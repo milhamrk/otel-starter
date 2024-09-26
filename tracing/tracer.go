@@ -15,11 +15,10 @@ import (
 func InitTracer() *trace.TracerProvider {
 	ctx := context.Background()
 
-	client := otlptracegrpc.NewClient(
+	traceExporter, err := otlptracegrpc.New(ctx,
 		otlptracegrpc.WithInsecure(),
 		otlptracegrpc.WithEndpoint("localhost:4317"),
 	)
-	traceExporter, err := otlptracegrpc.New(ctx, client)
 	if err != nil {
 		log.Fatal("Failed to create OTLP trace exporter:", err)
 	}
