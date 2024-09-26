@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"time"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"otel-starter/handlers"
 	"otel-starter/tracing"
-
-	"go.opentelemetry.io/otel"
 )
 
 func main() {
@@ -20,21 +21,28 @@ func main() {
 		}
 	}()
 
-	tracer := otel.Tracer("otel-starter")
-	ctx, span := tracer.Start(context.Background(), "main-operation")
-	defer span.End()
+	http.HandleFunc("/ping", handlers.PingHandler)
+	http.HandleFunc("/hello", handlers.HelloHandler)
 
-	// Simulate work
-	doWork(ctx)
-	fmt.Println("Tracing completed.")
-}
+	// Start the server
+	server := &http.Server{Addr: ":8080"}
 
-func doWork(ctx context.Context) {
-	tracer := otel.Tracer("otel-starter")
-	_, span := tracer.Start(ctx, "doWork")
-	defer span.End()
+	// Gracefully shutdown on interrupt
+	go func() {
+		log.Println("Server listening on :8080")
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("ListenAndServe failed: %v", err)
+		}
+	}()
 
-	// Simulate some work
-	time.Sleep(2 * time.Second)
-	fmt.Println("Work is done.")
+	// Wait for termination signals
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+	<-stop
+
+	// Shutdown the server
+	log.Println("Shutting down server...")
+	if err := server.Shutdown(context.Background()); err != nil {
+		log.Fatalf("Server shutdown failed: %v", err)
+	}
 }
