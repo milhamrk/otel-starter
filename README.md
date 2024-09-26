@@ -24,14 +24,14 @@ This project demonstrates how to set up tracing using OpenTelemetry with Go. It 
 
     Start the OpenTelemetry collector and Jaeger:
 
-    docker-compose up -d
+        docker-compose up -d
 
 3. **Run the Go application:**
 
     After starting the collector, run the Go application:
 
-    go run main.go
+        go run main.go
 
 4. **View traces in Jaeger:**
 
-Open your browser and go to `http://localhost:16686` to view the traces in Jaeger.
+    Open your browser and go to `http://localhost:16686` to view the traces in Jaeger.
