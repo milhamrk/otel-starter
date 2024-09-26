@@ -17,7 +17,7 @@ func InitTracer() *trace.TracerProvider {
 
 	traceExporter, err := otlptracegrpc.New(ctx,
 		otlptracegrpc.WithInsecure(),
-		otlptracegrpc.WithEndpoint("localhost:4317"),
+		otlptracegrpc.WithEndpoint("otel-collector:4317"),
 	)
 	if err != nil {
 		log.Fatal("Failed to create OTLP trace exporter:", err)
