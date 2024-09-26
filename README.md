@@ -4,7 +4,7 @@ This project demonstrates how to set up tracing using OpenTelemetry with Go. It 
 
 ## Prerequisites
 
-- [Go](https://golang.org/doc/install) 1.21 or later
+- [Go](https://golang.org/doc/install) 1.22 or later
 - [Docker](https://docs.docker.com/get-docker/)
 
 ## Features
