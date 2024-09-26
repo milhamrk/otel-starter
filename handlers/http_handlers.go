@@ -11,7 +11,7 @@ import (
 // PingHandler responds with "pong"
 func PingHandler(w http.ResponseWriter, r *http.Request) {
 	tracer := otel.Tracer("otel-starter")
-	ctx, span := tracer.Start(r.Context(), "PingHandler")
+	_, span := tracer.Start(r.Context(), "PingHandler")
 	defer span.End()
 
 	time.Sleep(100 * time.Millisecond) // Simulate work
@@ -21,7 +21,7 @@ func PingHandler(w http.ResponseWriter, r *http.Request) {
 // HelloHandler responds with "Hello, World!" and echoes the query
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
 	tracer := otel.Tracer("otel-starter")
-	ctx, span := tracer.Start(r.Context(), "HelloHandler")
+	_, span := tracer.Start(r.Context(), "HelloHandler")
 	defer span.End()
 
 	name := r.URL.Query().Get("name")
